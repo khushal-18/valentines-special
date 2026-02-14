@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Little Forever | Valentine's Day</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --rose-pink: #FF4081;
+            --deep-rose: #F50057;
+            --warm-gold: #FFCC80;
+            --deep-maroon: #3A0F1F;
+        }
+
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            color: #FF4081;
+            /* Rose Pink */
+            font-size: 14px;
+            transition: opacity 0.5s ease-out;
+        }
+
+        @keyframes sparkleFade {
+            0% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0.2) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #FFE4E9 0%, #FFF0F5 100%);
+            color: var(--deep-maroon);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%23FF4081"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'), auto;
+        }
+
+        button,
+        a,
+        input,
+        .card-flip {
+            cursor: pointer;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Active state for the pill */
+        .nav-item.active {
+            background-color: #F50057;
+            /* Deep Rose from your palette */
+            color: white;
+            box-shadow: 0 4px 15px rgba(245, 0, 87, 0.3);
+        }
+
+        /* Ensure the navbar stays centered and looks premium */
+        #navbar {
+            filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.05));
+        }
+
+        /* Hide text on very small mobile screens if it gets too crowded */
+        @media (max-width: 400px) {
+            .nav-item span {
+                display: none;
+            }
+
+            .nav-item {
+                px-4;
+            }
+        }
+
+        /* Floating Hearts Animation */
+        .heart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 64, 129, 0.2);
+            animation: float 15s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Hero Circle Flip Logic */
+        .hero-circle-container {
+            perspective: 1000px;
+        }
+
+        .hero-circle-inner {
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .hero-circle-container:hover .hero-circle-inner {
+            transform: rotateY(180deg);
+        }
+
+        .hero-circle-front,
+        .hero-circle-back {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            /* Safari support */
+        }
+
+        .hero-circle-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Adds a soft shadow rotation effect */
+        .hero-circle-container:hover {
+            filter: drop-shadow(0 20px 30px rgba(245, 0, 87, 0.2));
+        }
+
+        /* Card Flip Effect */
+        .card-inner {
+            transition: transform 1s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card-flip:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Ensure the front and back cover the same area exactly */
+        .card-front,
+        .card-back {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 1rem;
+            /* matches rounded-2xl */
+        }
+
+        /* Add a slight 'lift' effect on hover */
+        .card-flip:hover {
+            transform: translateY(-5px);
+            transition: transform 1s ease;
+        }
+
+        /* Ensure images don't overflow the rounded corners */
+        .card-front img {
+            border-radius: 1rem;
+        }
+
+        /* Timeline Connector */
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: var(--rose-pink);
+            transform: translateX(-50%);
+        }
+
+        /* Rotating Animation */
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spinning {
+            animation: spin 3s linear infinite;
+        }
+
+        /* Optional: Disc 'Bounce' when playing */
+        #music-disc {
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #music-disc.playing {
+            box-shadow: 0 0 20px rgba(245, 0, 87, 0.4);
+        }
+
+        /* Envelope Styles */
+        .envelope {
+            transition: transform 0.7s ease;
+            cursor: pointer;
+        }
+
+        .envelope:hover {
+            transform: translateY(-10px) rotate(2deg);
+        }
+
+        /* Custom Love Slider Styling */
+        .love-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 40px;
+            /* Thicker pill track */
+            background: #FFF0F5;
+            /* Soft pink background */
+            border-radius: 50px;
+            outline: none;
+            cursor: pointer;
+            border: 1px solid rgba(245, 0, 87, 0.1);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* The Heart Handle (Chrome/Safari) */
+        .love-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 50px;
+            height: 50px;
+            background: #F50057;
+            /* The Deep Rose color */
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 4px 10px rgba(245, 0, 87, 0.4);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        /* Hover effect for the handle */
+        .love-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        /* The Filling Track Effect (Firefox) */
+        .love-slider::-moz-range-progress {
+            background-color: #F50057;
+            height: 40px;
+            border-radius: 50px 0 0 50px;
+        }
+
+        footer {
+            background-color: #ffd7e5;
+        }
+
+        #valentine-footer {
+            /* A deep romantic night-sky gradient */
+            background: linear-gradient(180deg, #FFE4E9 0%, #FFB6C1 100%);
+        }
+
+        /* Make the NO button follow the cursor logic while staying within bounds */
+        #noBtn {
+            z-index: 50;
+            transition: all 0.2s ease-out;
+        }
+
+        /* Subtle pulse for the YES button shadow */
+        @keyframes yesPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(245, 0, 87, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 20px rgba(245, 0, 87, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(245, 0, 87, 0);
+            }
+        }
+
+        /* Animation for the music notes */
+        @keyframes flyUp {
+            0% {
+                transform: translateY(0) scale(1) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-150px) translateX(30px) scale(1.5) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        .music-note {
+            position: fixed;
+            z-index: 120;
+            pointer-events: none;
+            color: #F50057;
+            /* Deep Rose color to match your theme */
+            font-size: 20px;
+            animation: flyUp 2s ease-out forwards;
+        }
+
+        .hero-circle-container::before {
+            content: '';
+            position: absolute;
+            inset: -10px;
+            background: linear-gradient(45deg, #FF4081, #FFCC80, #F50057, #FF4081);
+            background-size: 400%;
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(10px);
+            animation: haloRotate 8s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes haloRotate {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .yes-pulse {
+            animation: yesPulse 2s infinite;
+        }
+
+        /* Container for the memory image to handle the zoom clipping */
+        .memory-item {
+            overflow: hidden;
+            border-radius: 0.75rem;
+            /* matches Tailwind rounded-lg */
+            cursor: pointer;
+        }
+
+        /* The actual image transition */
+        .memory-item img {
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* Hover state: Scale to 1.2x */
+        .memory-item:hover img {
+            transform: scale(1.2);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            padding: 2rem;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="fixed bottom-10 md:bottom-auto md:top-10 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-fit transition-all duration-500"
+        id="navbar">
+        <div
+            class="backdrop-blur-xl bg-white/70 border border-white/40 rounded-full px-4 py-3 shadow-2xl flex items-center justify-center gap-2 md:gap-6">
+
+            <a href="#"
+                class="nav-item active flex items-center gap-2 px-6 py-2 rounded-full transition-all duration-300 text-sm font-semibold whitespace-nowrap">
+                <i data-lucide="heart" class="w-4 h-4"></i>
+                <span>Home</span>
+            </a>
+
+            <a href="#story"
+                class="nav-item flex items-center gap-2 px-6 py-2 rounded-full transition-all duration-300 text-sm font-semibold whitespace-nowrap text-[#FF4081] hover:bg-pink-50">
+                <i data-lucide="book-open" class="w-4 h-4"></i>
+                <span>Our Story</span>
+            </a>
+
+            <a href="#reasons"
+                class="nav-item flex items-center gap-2 px-6 py-2 rounded-full transition-all duration-300 text-sm font-semibold whitespace-nowrap text-[#FF4081] hover:bg-pink-50">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                <span>Reasons</span>
+            </a>
+
+            <a href="#memories"
+                class="nav-item flex items-center gap-2 px-6 py-2 rounded-full transition-all duration-300 text-sm font-semibold whitespace-nowrap text-[#FF4081] hover:bg-pink-50">
+                <i data-lucide="image" class="w-4 h-4"></i>
+                <span>Memories</span>
+            </a>
+
+        </div>
+    </nav>
+
+    <div id="heart-container" class="heart-bg"></div>
+
+    <section class="relative h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+        <div class="z-10" data-aos="fade-up">
+
+            <div class="hero-circle-container w-80 h-80 md:w-96 md:h-96 mx-auto mb-10">
+                <div class="hero-circle-inner w-full h-full relative">
+
+                    <div
+                        class="hero-circle-front absolute inset-0 rounded-full bg-white shadow-2xl flex items-center justify-center border-4 border-[#FFE4E9]">
+                        <span class="text-8xl md:text-9xl drop-shadow-md animate-pulse">❤️</span>
+                        <div class="absolute inset-0 rounded-full bg-[#FF4081]/10 blur-xl"></div>
+                    </div>
+
+                    <div
+                        class="hero-circle-back absolute inset-0 rounded-full overflow-hidden border-4 border-white shadow-2xl">
+                        <img src="images/WhatsApp Image 2026-02-14 at 3.36.17 AM.jpeg" alt="Us"
+                            class="w-full h-full object-cover">
+                    </div>
+
+                </div>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl mb-4 text-[#F50057] font-bold">Happy Valentine's Day, Rashi ❤️</h1>
+            <p class="text-xl opacity-80 mb-10 font-light">Every day with you is my favorite adventure.</p>
+            <a href="#story"
+                class="bg-[#FF4081] text-white px-10 py-4 rounded-full font-semibold shadow-xl hover:bg-[#F50057] transition-all transform hover:scale-105 active:scale-95">
+                Open My Heart
+            </a>
+        </div>
+    </section>
+
+    <section id="story" class="py-20 px-4 max-w-5xl mx-auto">
+        <h2 class="text-4xl text-center mb-16">Our Little Timeline</h2>
+
+        <div class="relative timeline-line">
+            <div class="flex flex-col md:flex-row items-center mb-12" data-aos="fade-right">
+                <div class="md:w-1/2 md:pr-12 text-center md:text-right">
+                    <h3 class="text-2xl font-bold text-[#FF4081]">The Day We Met</h3>
+                    <p class="text-sm italic mb-2 text-gold">February 21st, 2025</p>
+                    <p>Amidst all the chaos , I noticed someone as beautiful as a blooming red rose , someone so
+                        confident and charming, someone who felt like a breath of fresh air in a room full of strangers
+                        --- I noticed you !!</p>
+                </div>
+                <div class="w-12 h-12 bg-white border-4 border-[#FF4081] rounded-full z-10 my-4 md:my-0"></div>
+                <div class="md:w-1/2 md:pl-12">
+                    <img src="images\WhatsApp Image 2026-02-14 at 4.35.23 AM.jpeg" class="rounded-lg shadow-md"
+                        alt="Meeting">
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row-reverse items-center mb-12" data-aos="fade-left">
+                <div class="md:w-1/2 md:pl-12 text-center md:text-left">
+                    <h3 class="text-2xl font-bold text-[#FF4081]">Our First Date</h3>
+                    <p class="text-sm italic mb-2 text-gold">January 22nd, 2026</p>
+                    <p>A week of planning and finally pulled it off . Saw you smiling and everything was worth it
+                        To more and more never ending dates ❤️</p>
+                </div>
+                <div class="w-12 h-12 bg-white border-4 border-[#FF4081] rounded-full z-10 my-4 md:my-0"></div>
+                <div class="md:w-1/2 md:pr-12">
+                    <img src="images/WhatsApp Image 2026-02-14 at 4.36.28 AM.jpeg" class="rounded-lg shadow-md ml-auto"
+                        alt="Date">
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center mb-12" data-aos="fade-left">
+                <div class="md:w-1/2 md:pl-12 text-center md:text-left">
+                    <h3 class="text-2xl font-bold text-[#FF4081]">Our Future</h3>
+                    <p class="text-sm italic mb-2 text-gold">February 14th, 2026 and beyond...</p>
+                    <p>Never been so sure about anything in my life as much as I am about you 💋 Let's plan how we are
+                        gonna eat dosa daily for breakfast ..hehe</p>
+                </div>
+                <div class="w-12 h-12 bg-white border-4 border-[#FF4081] rounded-full z-10 my-4 md:my-0"></div>
+                <div class="md:w-1/2 md:pr-12">
+                    <img src="images\WhatsApp Image 2026-02-14 at 4.29.04 AM.jpeg" class="rounded-lg shadow-md ml-auto"
+                        alt="Date">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reasons" class="py-20 bg-white/30 px-4">
+        <h2 class="text-4xl text-center mb-12">Why I Love You</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-1 max-w-5xl mx-auto">
+            <script>
+                const reasons = [
+                    { r: "Your Smile: It brightens even my darkest days instantly.", img: "images/11.png" },
+                    { r: "Your Kindness: The way you care for everyone around you.", img: "images/12.png" },
+                    { r: "Your Laugh: The most beautiful melody I've ever heard.", img: "images/13.png" },
+                    { r: "Your Strength: You inspire me to be a better person daily.", img: "images/21.png" },
+                    { r: "Our Jokes: The secret language only we understand.", img: "images/22.png" },
+                    { r: "Our Future: Knowing that 'Forever' is with you.", img: "images/23.png" }
+                ];
+
+                reasons.forEach(item => {
+                    document.write(`
+                    <div class="h-48 md:h-64 perspective card-flip" data-aos="zoom-in">
+                        <div class="relative w-full h-full card-inner shadow-xl rounded-2xl">
+                            <div class="card-front bg-white rounded-2xl overflow-hidden border-2 border-white">
+                                <img src="${item.img}" class="w-full h-full object-cover" alt="Memory">
+                                <div class="absolute inset-0 bg-black/10 hover:bg-transparent transition-colors"></div>
+                            </div>
+                            <div class="card-back bg-[#F50057] text-white flex items-center justify-center p-4 rounded-2xl text-center shadow-inner">
+                                <p class="text-sm md:text-lg font-medium leading-tight">${item.r}</p>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                });
+            </script>
+        </div>
+    </section>
+
+    <section id="memories" class="py-20 px-4 max-w-6xl mx-auto">
+        <h2 class="text-4xl text-center mb-12">Our Favorite Memories</h2>
+        <div class="columns-1 md:columns-3 gap-4 space-y-4">
+            <div class="memory-item shadow-lg" data-aos="fade-up">
+                <img src="images\WhatsApp Image 2026-02-14 at 3.36.17 AM.jpeg" alt="Memory 1">
+            </div>
+
+            <div class="memory-item shadow-lg" data-aos="fade-up" data-aos-delay="100">
+                <img src="images\WhatsApp Image 2026-02-14 at 4.19.44 AM.jpeg" alt="Memory 2">
+            </div>
+
+            <div class="memory-item shadow-lg" data-aos="fade-up" data-aos-delay="200">
+                <img src="images\WhatsApp Image 2026-02-14 at 3.36.15 AM.jpeg" alt="Memory 3">
+            </div>
+
+            <div class="memory-item shadow-lg" data-aos="fade-up">
+                <img src="images\WhatsApp Image 2026-02-14 at 3.36.13 AM.jpeg" alt="Memory 4">
+            </div>
+
+            <div class="memory-item shadow-lg" data-aos="fade-up" data-aos-delay="100">
+                <img src="images\WhatsApp Image 2026-02-14 at 4.19.45 AM.jpeg" alt="Memory 5">
+            </div>
+
+            <div class="memory-item shadow-lg" data-aos="fade-up" data-aos-delay="200">
+                <img src="images\WhatsApp Image 2026-02-14 at 4.31.02 AM.jpeg" alt="Memory 6">
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-[#FFE4E9] px-4 text-center">
+        <h2 class="text-4xl mb-12">Letters for You</h2>
+        <div class="flex flex-wrap justify-center gap-12">
+            <div onclick="openLetter(1)"
+                class="envelope w-32 h-24 bg-white rounded-b-lg border-2 border-pink-200 flex items-center justify-center relative">
+                <div class="absolute -top-6 left-0 w-full h-12 bg-white rounded-t-full border-t-2 border-pink-200">
+                </div>
+                <i data-lucide="mail" class="text-pink-400"></i>
+            </div>
+            <div onclick="openLetter(2)"
+                class="envelope w-32 h-24 bg-white rounded-b-lg border-2 border-pink-200 flex items-center justify-center relative">
+                <div class="absolute -top-6 left-0 w-full h-12 bg-white rounded-t-full border-t-2 border-pink-200">
+                </div>
+                <i data-lucide="heart" class="text-pink-400"></i>
+            </div>
+            <div onclick="openLetter(3)"
+                class="envelope w-32 h-24 bg-white rounded-b-lg border-2 border-pink-200 flex items-center justify-center relative">
+                <div class="absolute -top-6 left-0 w-full h-12 bg-white rounded-t-full border-t-2 border-pink-200">
+                </div>
+                <i data-lucide="star" class="text-pink-400"></i>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 px-4 text-center max-w-2xl mx-auto">
+        <h2 class="text-3xl mb-12 text-[#3A0F1F]">How much do I love you?</h2>
+
+        <div class="relative love-meter-container py-10">
+            <input type="range" min="0" max="100" value="0" id="loveSlider" class="love-slider">
+        </div>
+
+        <p id="loveStatus" class="mt-8 text-2xl font-bold text-[#F50057] transition-all duration-300">
+            Slide to measure...
+        </p>
+    </section>
+
+    <footer id="valentine-footer"
+        class="relative py-32 px-4 overflow-hidden text-center min-h-[600px] flex flex-col justify-center items-center">
+
+        <div class="absolute top-0 left-0 w-full overflow-hidden leading-[0]">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-20 fill-[#F0D9E5]">
+                <path
+                    d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z">
+                </path>
+            </svg>
+        </div>
+
+        <div class="z-10 backdrop-blur-md bg-white/20 p-10 md:p-16 rounded-[40px] border border-white/40 shadow-2xl relative max-w-2xl mx-auto"
+            data-aos="zoom-in">
+
+            <div class="mb-6 inline-block p-4 bg-white/80 rounded-full shadow-inner animate-pulse">
+                <i data-lucide="heart" class="w-12 h-12 text-[#F50057] fill-[#F50057]"></i>
+            </div>
+
+            <h2 class="text-4xl md:text-6xl mb-6 font-bold text-[#3A0F1F] leading-tight">
+                Will you be my <br><span class="text-[#F50057]">Valentine?</span>
+            </h2>
+
+            <p class="text-lg mb-12 text-[#3A0F1F]/70 italic">
+                "I have found the one whom my soul loves."
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-8 items-center min-h-[100px]">
+                <button onclick="handleYes()"
+                    class="group relative bg-[#F50057] text-white px-12 py-5 rounded-full text-2xl font-bold shadow-[0_10px_30px_rgba(245,0,87,0.4)] hover:scale-110 active:scale-95 transition-all">
+                    <span class="relative z-10">YES!</span>
+                    <div
+                        class="absolute inset-0 bg-white/20 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300">
+                    </div>
+                </button>
+
+                <button id="noBtn"
+                    class="bg-white/50 backdrop-blur-sm text-gray-600 px-10 py-4 rounded-full text-xl font-medium border border-white/50 transition-all duration-75">
+                    No
+                </button>
+            </div>
+        </div>
+
+        <div class="absolute inset-0 pointer-events-none">
+            <div
+                class="absolute top-1/4 left-10 animate-bounce transition-all duration-[3000ms] text-[#FFCC80] opacity-50">
+                <i data-lucide="sparkles"></i>
+            </div>
+            <div
+                class="absolute bottom-1/4 right-10 animate-bounce transition-all duration-[4000ms] text-[#FFCC80] opacity-50">
+                <i data-lucide="sparkles"></i>
+            </div>
+        </div>
+    </footer>
+
+    <div id="letterModal" class="modal" onclick="this.style.display='none'">
+        <div class="bg-white p-10 rounded-2xl max-w-2xl w-full text-center shadow-2xl transform scale-90 transition-transform"
+            onclick="event.stopPropagation()">
+            <h3 id="modalTitle" class="text-3xl text-pink-600 mb-6"></h3>
+            <p id="modalBody" class="text-lg leading-relaxed text-gray-700"></p>
+            <button onclick="document.getElementById('letterModal').style.display='none'"
+                class="mt-8 text-pink-500 font-bold uppercase tracking-widest">Close</button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({ duration: 1000, once: true });
+
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        document.addEventListener('mousemove', function (e) {
+            // Only create a sparkle every 3rd movement to prevent lag
+            if (Math.random() < 0.3) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+
+                // Randomly pick a sparkle or a heart
+                const symbols = ['✨', '❤️', '💖', '⭐'];
+                sparkle.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+
+                // Position at cursor coordinates
+                sparkle.style.left = e.clientX + 'px';
+                sparkle.style.top = e.clientY + 'px';
+
+                // Add custom animation
+                sparkle.style.animation = 'sparkleFade 0.8s forwards';
+
+                document.body.appendChild(sparkle);
+
+                // Remove from DOM when animation ends
+                setTimeout(() => {
+                    sparkle.remove();
+                }, 800);
+            }
+        });
+        // Background Hearts
+        const heartContainer = document.getElementById('heart-container');
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 10 + 5) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heartContainer.appendChild(heart);
+            setTimeout(() => heart.remove(), 15000);
+        }
+        setInterval(createHeart, 800);
+
+        // Love Letters Content
+        const letters = {
+            1: { t: "To My Soulmate", b: "From the moment we met, my life has been filled with colors I never knew existed. You are my home and my heart." },
+            2: { t: "My Favorite Memory", b: "Remember that rainy afternoon when we couldn't stop laughing? It's the small moments like those that make me love you more every day." },
+            3: { t: "A Promise", b: "I promise to always be your biggest fan, your strongest support, and your most devoted partner. Forever and always." }
+        };
+
+        function openLetter(id) {
+            const modal = document.getElementById('letterModal');
+            document.getElementById('modalTitle').innerText = letters[id].t;
+            document.getElementById('modalBody').innerText = letters[id].b;
+            modal.style.display = 'flex';
+            setTimeout(() => modal.children[0].style.transform = 'scale(1)', 10);
+        }
+
+
+
+        // Love Meter Logic
+        const slider = document.getElementById('loveSlider');
+        const status = document.getElementById('loveStatus');
+
+        slider.addEventListener('input', function () {
+            const value = this.value;
+
+            // Create the progressive fill color as you drag
+            const color = `linear-gradient(90deg, #F50057 ${value}%, #FFF0F5 ${value}%)`;
+            this.style.background = color;
+
+            // Update Text Logic
+            if (value == 0) {
+                status.innerText = "Slide to measure...";
+            } else if (value < 30) {
+                status.innerText = "A whole lot! 💕";
+            } else if (value < 70) {
+                status.innerText = "More than all the stars! ✨";
+            } else if (value < 100) {
+                status.innerText = "To the moon and back! 🌙";
+            } else {
+                status.innerText = "INFINITY AND BEYOND! 💖";
+                // Confetti burst from the previous step
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.8 },
+                    colors: ['#FF4081', '#F50057', '#FFCC80']
+                });
+            }
+        });
+
+        // Impossible "No" Button
+        const noBtn = document.getElementById('noBtn');
+        const footer = document.getElementById('valentine-footer');
+
+        noBtn.addEventListener('mouseover', () => {
+            // Calculate boundaries within the footer
+            const footerRect = footer.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+
+            // Random position within the footer boundaries
+            const maxX = footerRect.width - btnRect.width;
+            const maxY = footerRect.height - btnRect.height;
+
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        });
+        // Final "Yes" Celebration
+        function handleYes() {
+            // 1. Show the Modal
+            const modal = document.getElementById('successModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            // 2. Trigger Confetti from the sides
+            const duration = 3 * 1000;
+            const end = Date.now() + duration;
+
+            (function frame() {
+                // Left side cannon
+                confetti({
+                    particleCount: 3,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#FF4081', '#F50057', '#FFCC80']
+                });
+                // Right side cannon
+                confetti({
+                    particleCount: 3,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#FF4081', '#F50057', '#FFCC80']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+
+            // Refresh icons inside the modal
+            lucide.createIcons();
+        }
+
+        function closeSuccessModal() {
+            const modal = document.getElementById('successModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Select all navigation links
+        const navItems = document.querySelectorAll('.nav-item');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', function (e) {
+                // 1. Prevent the default jumpy behavior
+                e.preventDefault();
+
+                // 2. Visual Feedback: Update the 'Active' pill state
+                navItems.forEach(i => {
+                    i.classList.remove('active');
+                    i.classList.add('text-[#FF4081]'); // Revert others to pink text
+                });
+                this.classList.add('active');
+                this.classList.remove('text-[#FF4081]'); // Remove text color for white text on pink bg
+
+                // 3. Smooth Scroll Logic
+                const targetId = this.getAttribute('href');
+
+                // If it's the 'Home' link (href="#"), scroll to top
+                if (targetId === "#") {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    // Find the target section and scroll to it
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        // We offset by 100px so the navbar doesn't cover the section title
+                        const offset = 100;
+                        const bodyRect = document.body.getBoundingClientRect().top;
+                        const elementRect = targetSection.getBoundingClientRect().top;
+                        const elementPosition = elementRect - bodyRect;
+                        const offsetPosition = elementPosition - offset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // 4. Scroll Spy: Update the active pill automatically as the user scrolls
+        window.addEventListener('scroll', () => {
+            let current = "";
+            const sections = document.querySelectorAll("section");
+            const scrollPosition = window.scrollY + 150; // Adjustment for header offset
+
+            sections.forEach((section) => {
+                if (scrollPosition >= section.offsetTop) {
+                    current = section.getAttribute("id");
+                }
+            });
+
+            navItems.forEach((item) => {
+                item.classList.remove("active");
+                item.classList.add('text-[#FF4081]');
+
+                // Check if the link's href matches the current section ID
+                if (item.getAttribute("href").includes(current)) {
+                    item.classList.add("active");
+                    item.classList.remove('text-[#FF4081]');
+                }
+
+                // Default to Home if at the very top
+                if (window.scrollY < 200 && item.getAttribute("href") === "#") {
+                    item.classList.add("active");
+                    item.classList.remove('text-[#FF4081]');
+                }
+            });
+        });
+
+
+    </script>
+    <div class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[110] w-[90%] max-w-md">
+        <div
+            class="backdrop-blur-xl bg-white/40 border border-white/60 rounded-full p-2 pl-4 shadow-2xl flex items-center gap-4">
+
+            <div class="relative w-14 h-14 flex-shrink-0">
+                <div id="music-disc"
+                    class="w-full h-full rounded-full border-4 border-[#3A0F1F] bg-[#1a1a1a] overflow-hidden shadow-lg relative transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?q=80&w=100"
+                        class="w-full h-full object-cover opacity-90" alt="Album Art">
+                    <div class="absolute inset-0 m-auto w-3 h-3 bg-white rounded-full border-2 border-[#3A0F1F]"></div>
+                </div>
+            </div>
+
+            <div class="flex-grow pr-4">
+                <div class="flex flex-col">
+                    <span id="track-name" class="text-[#3A0F1F] font-bold text-xs md:text-sm truncate">Song Title
+                        1</span>
+                    <span id="play-status"
+                        class="text-[#F50057] text-[10px] uppercase tracking-widest font-semibold">Paused</span>
+                </div>
+
+                <div class="flex items-center gap-2 mt-1">
+                    <button onclick="prevTrack()" class="text-[#3A0F1F] hover:text-[#F50057] transition-colors">
+                        <i data-lucide="skip-back" class="w-4 h-4 fill-current"></i>
+                    </button>
+
+                    <button onclick="toggleAudio()" id="play-btn"
+                        class="bg-[#F50057] text-white p-2 rounded-full hover:scale-110 transition-transform shadow-md">
+                        <i id="play-icon" data-lucide="play" class="w-4 h-4 fill-current"></i>
+                    </button>
+
+                    <button onclick="nextTrack()" class="text-[#3A0F1F] hover:text-[#F50057] transition-colors">
+                        <i data-lucide="skip-forward" class="w-4 h-4 fill-current"></i>
+                    </button>
+
+                    <div class="flex-grow bg-black/10 h-1.5 rounded-full overflow-hidden cursor-pointer"
+                        id="progress-container">
+                        <div id="audio-progress"
+                            class="bg-[#F50057] h-full w-0 transition-all duration-100 ease-linear"></div>
+                    </div>
+                </div>
+            </div>
+
+            <audio id="main-audio" preload="auto"></audio>
+        </div>
+    </div>
+
+    <style>
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spinning {
+            animation: spin 3s linear infinite;
+        }
+    </style>
+
+    <script>
+        // 1. Updated Playlist
+        const songs = [
+            { name: "Perfect - Ed Sheeran", file: "audio/perfect.mp3" },
+            { name: "Nothing - Bruno Major", file: "audio/nothing.mp3" },
+            { name: "You Belong With Me - Taylor Swift", file: "audio/ybwm.mp3" }
+        ];
+
+        let songIndex = 0;
+        let isPlaying = false;
+
+        const audio = document.getElementById('main-audio');
+        const disc = document.getElementById('music-disc');
+        const playIcon = document.getElementById('play-icon');
+        const playStatus = document.getElementById('play-status');
+        const trackName = document.getElementById('track-name');
+        const progressBar = document.getElementById('audio-progress');
+        const progressContainer = document.getElementById('progress-container');
+
+        // Load initial song
+        loadSong(songs[songIndex]);
+
+        function loadSong(song) {
+            trackName.innerText = song.name;
+            audio.src = song.file;
+            progressBar.style.width = '0%';
+        }
+
+        function toggleAudio() {
+            if (audio.paused) {
+                playTrack();
+            } else {
+                pauseTrack();
+            }
+        }
+        function createNote() {
+            // Only create notes if the audio is actually playing
+            if (audio.paused) return;
+
+            const noteSymbols = ['♫', '♪', '♩', '♬'];
+            const note = document.createElement('div');
+
+            // Pick a random music symbol
+            note.innerText = noteSymbols[Math.floor(Math.random() * noteSymbols.length)];
+            note.className = 'music-note';
+
+            // Position the note near the music player (bottom center)
+            // We add a little randomness so they don't all appear in the exact same spot
+            const randomOffset = (Math.random() * 100) - 50;
+            note.style.left = `calc(50% + ${randomOffset}px)`;
+            note.style.bottom = '100px';
+
+            document.body.appendChild(note);
+
+            // Remove the note from the DOM after the animation ends (2 seconds)
+            setTimeout(() => {
+                note.remove();
+            }, 2000);
+        }
+
+        // Trigger the particle creator every 800ms
+        setInterval(createNote, 800);
+
+        function playTrack() {
+            audio.play().then(() => {
+                isPlaying = true;
+                disc.classList.add('spinning');
+
+                // 1. Change the attribute to 'pause'
+                playIcon.setAttribute('data-lucide', 'pause');
+                playStatus.innerText = "Now Playing";
+
+                // 2. RE-INITIALIZE ICONS (This forces the visual change)
+                lucide.createIcons();
+            }).catch(err => {
+                console.error("Playback error:", err);
+                alert("Please check your 'audio' folder for the correct file names!");
+            });
+        }
+
+        function pauseTrack() {
+            audio.pause();
+            isPlaying = false;
+
+            // 1. Change the attribute to 'play'
+            playIcon.setAttribute('data-lucide', 'play');
+            playStatus.innerText = "Paused";
+
+            // 2. RE-INITIALIZE ICONS (This forces the visual change)
+            lucide.createIcons();
+        }
+
+        function nextTrack() {
+            songIndex = (songIndex + 1) % songs.length;
+            loadSong(songs[songIndex]);
+            if (isPlaying) playTrack();
+            else lucide.createIcons();
+        }
+
+        function prevTrack() {
+            songIndex = (songIndex - 1 + songs.length) % songs.length;
+            loadSong(songs[songIndex]);
+            if (isPlaying) playTrack();
+            else lucide.createIcons();
+        }
+
+        // Progress Bar Sync
+        audio.addEventListener('timeupdate', () => {
+            if (audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressBar.style.width = percent + '%';
+            }
+        });
+
+        audio.addEventListener('ended', nextTrack);
+
+        progressContainer.addEventListener('click', (e) => {
+            const width = progressContainer.clientWidth;
+            const clickX = e.offsetX;
+            if (audio.duration) {
+                audio.currentTime = (clickX / width) * audio.duration;
+            }
+        });
+    </script>
+    <div id="successModal" class="fixed inset-0 z-[200] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+
+        <div class="relative bg-white rounded-3xl p-8 md:p-12 max-w-sm w-full text-center shadow-[0_20px_50px_rgba(245,0,87,0.3)] transform transition-all"
+            data-aos="zoom-in">
+            <div class="w-20 h-20 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i data-lucide="heart" class="w-10 h-10 text-[#F50057] fill-current animate-bounce"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-[#3A0F1F] mb-4">It's a Date! ❤️</h2>
+            <p class="text-lg text-gray-600 leading-relaxed">
+                Yay! You've made me the happiest person alive!
+            </p>
+            <button onclick="closeSuccessModal()"
+                class="mt-8 bg-[#F50057] text-white px-8 py-2 rounded-full font-semibold hover:bg-[#FF4081] transition-colors">
+                Close
+            </button>
+        </div>
+    </div>
+</body>
+
+</html>
